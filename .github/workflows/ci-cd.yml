@@ -6,27 +6,30 @@ on:
   pull_request:
 
 jobs:
-# downloads the app from github to the virtual machine workflows uses 
   build-test:
     name: Build & Test
     runs-on: ubuntu-latest
     steps:
+    # download the repo from github to run it in the vm workflow 
       - name: Checkout
         uses: actions/checkout@v4
-# installs the node js environment 
+      # node js
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: '18'
-# installs all dependencies 
+      # deps so that node.js can run okay 
       - name: Install deps
         run: npm install
-# auth test cases 
+      # Run test cases
       - name: Run tests
         run: npm test
 
-      # Build Docker image 
+      # Build Docker image with the dockerfile 
       - name: Build Docker image
+        # only if dockerfile exists 
+        # passes the commit hash into the image as metadata
+        if: ${{ hashFiles('Dockerfile') != '' }}
         run: |
           docker build \
             --build-arg COMMIT_SHA=${{ github.sha }} \
