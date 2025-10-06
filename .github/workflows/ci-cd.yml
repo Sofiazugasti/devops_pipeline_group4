@@ -18,9 +18,9 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '18'
-# installs all dependencies and its more secure tham npm i 
+# installs all dependencies 
       - name: Install deps
-        run: npm ci
+        run: npm install
 # auth test cases 
       - name: Run tests
         run: npm test
